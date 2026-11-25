@@ -1,4 +1,5 @@
 package com.proyecto.monitor.vista;
+
 import com.proyecto.monitor.controller.ConfiguradorController;
 
 import javax.swing.*;
@@ -12,16 +13,27 @@ public class ConfiguradorFrame extends JFrame {
             new JTextField("config/monitor01");
 
     private final JComboBox<String> moneda1Field =
-            new JComboBox<>(new String[]{"BTC", "SOL"});
+            new JComboBox<>(new String[]{"BTC", "SOL", "ETH", "XRP", "ADA", "DOGE"});
+
     private final JComboBox<String> moneda2Field =
-            new JComboBox<>(new String[]{"SOL", "BTC"});
+            new JComboBox<>(new String[]{"BTC", "SOL", "ETH", "XRP", "ADA", "DOGE"});
 
     private final JTextField limite1Field =
             new JTextField("95000");
     private final JTextField limite2Field =
             new JTextField("200");
+
     private final JSpinner duracionField =
             new JSpinner(new SpinnerNumberModel(2, 1, 3600, 1));
+
+    private final JSlider volumenField =
+            new JSlider(0, 100, 80);
+
+    private final JComboBox<String> modoAlertaField =
+            new JComboBox<>(new String[]{"MAX", "MIN"});
+
+    private final JSpinner intervaloField =
+            new JSpinner(new SpinnerNumberModel(30, 5, 3600, 5));
 
     private final JLabel estadoLabel =
             new JLabel("Listo para enviar configuración.");
@@ -32,7 +44,7 @@ public class ConfiguradorFrame extends JFrame {
     public ConfiguradorFrame() {
         setTitle("Configurador del monitor de criptomonedas");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(520, 420);
+        setSize(560, 540);
         setLocationRelativeTo(null);
 
         JPanel contenido = new JPanel(new BorderLayout(10, 10));
@@ -43,7 +55,12 @@ public class ConfiguradorFrame extends JFrame {
         titulo.setFont(titulo.getFont().deriveFont(Font.BOLD, 20f));
         contenido.add(titulo, BorderLayout.NORTH);
 
-        JPanel formulario = new JPanel(new GridLayout(0, 2, 10, 12));
+        volumenField.setMajorTickSpacing(20);
+        volumenField.setMinorTickSpacing(10);
+        volumenField.setPaintTicks(true);
+        volumenField.setPaintLabels(true);
+
+        JPanel formulario = new JPanel(new GridLayout(0, 2, 10, 10));
 
         formulario.add(new JLabel("Broker MQTT:"));
         formulario.add(brokerField);
@@ -66,6 +83,15 @@ public class ConfiguradorFrame extends JFrame {
         formulario.add(new JLabel("Duración de alarma (segundos):"));
         formulario.add(duracionField);
 
+        formulario.add(new JLabel("Volumen de alarma (0 a 100):"));
+        formulario.add(volumenField);
+
+        formulario.add(new JLabel("Modo de alarma:"));
+        formulario.add(modoAlertaField);
+
+        formulario.add(new JLabel("Intervalo de consulta (segundos):"));
+        formulario.add(intervaloField);
+
         contenido.add(formulario, BorderLayout.CENTER);
 
         JButton enviarButton = new JButton("Enviar configuración");
@@ -86,7 +112,10 @@ public class ConfiguradorFrame extends JFrame {
                     limite1Field.getText(),
                     (String) moneda2Field.getSelectedItem(),
                     limite2Field.getText(),
-                    duracionField.getValue().toString()
+                    duracionField.getValue().toString(),
+                    Integer.toString(volumenField.getValue()),
+                    (String) modoAlertaField.getSelectedItem(),
+                    intervaloField.getValue().toString()
             );
 
             estadoLabel.setText(resultado);

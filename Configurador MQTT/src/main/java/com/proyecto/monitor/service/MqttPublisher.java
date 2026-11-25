@@ -1,9 +1,10 @@
 package com.proyecto.monitor.service;
+
 import com.proyecto.monitor.model.Configuracion;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -17,12 +18,15 @@ public class MqttPublisher {
 
         String mensajeJson = String.format(
                 Locale.US,
-                "{\"moneda1\":\"%s\",\"moneda2\":\"%s\",\"limite1\":%.8f,\"limite2\":%.8f,\"duracionAlarmaSeg\":%d}",
+                "{\"moneda1\":\"%s\",\"moneda2\":\"%s\",\"limite1\":%.8f,\"limite2\":%.8f,\"duracionAlarmaSeg\":%d,\"volumenAlarma\":%d,\"modoAlerta\":\"%s\",\"intervaloSeg\":%d}",
                 configuracion.getMoneda1(),
                 configuracion.getMoneda2(),
                 configuracion.getLimite1(),
                 configuracion.getLimite2(),
-                configuracion.getDuracionAlarmaSeg()
+                configuracion.getDuracionAlarmaSeg(),
+                configuracion.getVolumenAlarma(),
+                configuracion.getModoAlerta(),
+                configuracion.getIntervaloSeg()
         );
 
         MqttClient cliente = new MqttClient(
@@ -34,7 +38,6 @@ public class MqttPublisher {
             MqttConnectOptions opciones = new MqttConnectOptions();
             opciones.setCleanSession(true);
             opciones.setConnectionTimeout(5);
-
             cliente.connect(opciones);
 
             MqttMessage mensaje = new MqttMessage(
