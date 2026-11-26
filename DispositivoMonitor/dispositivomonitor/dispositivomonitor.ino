@@ -24,9 +24,9 @@ TwoWire I2C_OLED = TwoWire(1);
 Adafruit_SSD1306 oled(128, 64, &I2C_OLED, -1);
 
 // --- Configuración Wi-Fi y Broker Mosquitto Local ---
-const char* WIFI_SSID     = "FAMILIA GORDILLO";
-const char* WIFI_PASSWORD = "corazon2022";
-const char* MQTT_SERVER   = "192.168.1.2";
+const char* WIFI_SSID     = "Wifi";
+const char* WIFI_PASSWORD = "clave wifi";
+const char* MQTT_SERVER   = "192.168.x.x";
 const uint16_t MQTT_PORT  = 1883;
 const char* TOPICO_CONFIG = "config/monitor01";
 
